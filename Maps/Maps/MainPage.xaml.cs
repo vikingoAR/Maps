@@ -28,8 +28,8 @@ namespace Maps
             try
             {
                 var request = new GeolocationRequest(GeolocationAccuracy.Best);
-                userLocation = await Geolocation.GetLocationAsync(request);
-                //userLocation = await Geolocation.GetLastKnownLocationAsync();
+                //userLocation = await Geolocation.GetLocationAsync(request);
+                userLocation = await Geolocation.GetLastKnownLocationAsync();
             }
             catch (FeatureNotSupportedException fnsEx)
             {
