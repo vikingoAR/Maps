@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -25,9 +26,14 @@ namespace Maps
 
         async Task FindUserLocation()
         {
+            //TimeSpan pepe = TimeSpan.FromMinutes(2);
+            //CancellationTokenSource cts;
+            //cts = new CancellationTokenSource();
+            //cts.CancelAfter(20000);
+
             try
             {
-                var request = new GeolocationRequest(GeolocationAccuracy.Best);
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium);
                 //userLocation = await Geolocation.GetLocationAsync(request);
                 userLocation = await Geolocation.GetLastKnownLocationAsync();
             }
