@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -15,39 +15,51 @@ namespace Maps
         public MainPage()
         {
             InitializeComponent();
-            FindUserLocation();
+
+
+
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await FindUserLocation();
+
+            if (userLocation == null)
+                return;
 
             mapPosition = new Position(userLocation.Latitude, userLocation.Longitude);
 
+
             MapView.MoveToRegion(
                 MapSpan.FromCenterAndRadius(
-                    mapPosition, Distance.FromMiles(1)));
+                    mapPosition, Distance.FromMiles(0.2)));
         }
 
         async Task FindUserLocation()
         {
-            //TimeSpan pepe = TimeSpan.FromMinutes(2);
-            //CancellationTokenSource cts;
-            //cts = new CancellationTokenSource();
-            //cts.CancelAfter(20000);
-
             try
             {
-                var request = new GeolocationRequest(GeolocationAccuracy.Medium);
-                //userLocation = await Geolocation.GetLocationAsync(request);
-                userLocation = await Geolocation.GetLastKnownLocationAsync();
+                var request = new GeolocationRequest(GeolocationAccuracy.Best);
+                //userLocation = await Geolocation.GetLastKnownLocationAsync();
+                //Debug.WriteLine(userLocation?.ToString() ?? "no location");
+                userLocation = await Geolocation.GetLocationAsync(request);
+                //Debug.WriteLine(userLocation?.ToString() ?? "no location");
             }
             catch (FeatureNotSupportedException fnsEx)
             {
                 // Handle not supported on device exception
+                Debug.WriteLine(fnsEx);
             }
             catch (PermissionException pEx)
             {
                 // Handle permission exception
+                Debug.WriteLine(pEx);
             }
             catch (Exception ex)
             {
                 // Unable to get location
+                Debug.WriteLine(ex);
             }
         }
     }
